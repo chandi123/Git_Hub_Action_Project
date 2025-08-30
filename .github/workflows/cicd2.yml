@@ -30,13 +30,20 @@ jobs:
      steps:
      - uses: actions/checkout@v4
    
-     - name: trivy fs scan
+     - name: trivy installation
        run: |
         sudo apt-get install wget gnupg
         wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
         echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
         sudo apt-get update
         sudo apt-get install trivy
+     - name: trivy FS Scan
+       run: trivy fs --format table -o fs-report.json
+     - name: Gitleaks installation
+       run: sudo apt install -y gitleaks
+     
+       
+     
 
 
   
